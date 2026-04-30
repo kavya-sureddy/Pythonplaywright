@@ -1,0 +1,4 @@
+[
+  {"email": "valid@gmail.com", "password": "Valid@123", "type": "valid"},
+  {"email": "invalid@gmail.com", "password": "wrong", "type": "invalid"}
+]
