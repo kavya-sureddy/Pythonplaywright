@@ -69,5 +69,3 @@ class CheckoutPage:
         self.page.locator("#confirm-order-buttons-container input[value='Confirm']").click()
         self.page.wait_for_selector("text=Your order has been successfully processed")
 
-    def logout(self):
-        self.page.locator("a.ico-login").click()
