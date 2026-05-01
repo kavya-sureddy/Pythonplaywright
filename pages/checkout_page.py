@@ -16,7 +16,6 @@ class CheckoutPage:
     def fill_billing_details(self):
         self.page.wait_for_selector("#billing-buttons-container")
 
-        # Fill only if fields visible (new user case)
         if self.page.locator("#BillingNewAddress_CountryId").is_visible():
             self.page.select_option("#BillingNewAddress_CountryId", "41")
             self.page.fill("#BillingNewAddress_City", "Hyderabad")
@@ -24,13 +23,37 @@ class CheckoutPage:
             self.page.fill("#BillingNewAddress_ZipPostalCode", "500001")
             self.page.fill("#BillingNewAddress_PhoneNumber", "9999999999")
 
-        # Click correct Continue
-        self.page.locator("#billing-buttons-container input[value='Continue']").click()
+        self.page.wait_for_timeout(1000)
+        self.page.evaluate("""
+            document.querySelector("#billing-buttons-container input[value='Continue']").click()
+        """)
 
-        # wait till next section opens
+        # Wait for shipping ADDRESS section to load
+        self.page.wait_for_selector("#shipping-buttons-container")
+
+    def fill_shipping_address(self):
+        if self.page.locator("#ShippingNewAddress_CountryId").is_visible():
+            self.page.select_option("#ShippingNewAddress_CountryId", "41")
+            self.page.fill("#ShippingNewAddress_City", "Hyderabad")
+            self.page.fill("#ShippingNewAddress_Address1", "Test Address")
+            self.page.fill("#ShippingNewAddress_ZipPostalCode", "500001")
+            self.page.fill("#ShippingNewAddress_PhoneNumber", "9999999999")
+
+        self.page.wait_for_timeout(1000)
+        self.page.evaluate("""
+            document.querySelector("#shipping-buttons-container input[value='Continue']").click()
+        """)
+
+        # Wait for shipping METHOD section to load
         self.page.wait_for_selector("#shipping-method-buttons-container")
 
     def shipping_method(self):
+        # Auto-select first option if none selected
+        first_option = self.page.locator("input[name='shippingoption']").first
+        if not first_option.is_checked():
+            first_option.check()
+
+        self.page.wait_for_timeout(500)
         self.page.locator("#shipping-method-buttons-container input[value='Continue']").click()
         self.page.wait_for_selector("#payment-method-buttons-container")
 

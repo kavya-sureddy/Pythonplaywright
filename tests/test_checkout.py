@@ -23,11 +23,16 @@ def test_checkout(page):
     checkout.accept_terms()
     checkout.click_checkout()
 
-    # billing (handles both new/existing address)
+    # billing
     checkout.fill_billing_details()
 
-    # remaining steps
+    # shipping address
+    checkout.fill_shipping_address()
+
+    # shipping method (auto-selects first option)
     checkout.shipping_method()
+
+    # payment
     checkout.payment_method()
     checkout.payment_info()
     checkout.confirm_order()
