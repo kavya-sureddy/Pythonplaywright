@@ -39,3 +39,6 @@ def test_checkout(page):
 
     # final assertion
     assert page.locator("text=Your order has been successfully processed").is_visible()
+
+    # logout
+    checkout.logout()
